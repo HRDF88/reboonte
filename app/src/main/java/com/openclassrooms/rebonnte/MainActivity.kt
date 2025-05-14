@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
     private fun startMyBroadcast() {
         val intent = Intent("com.rebonnte.ACTION_UPDATE")
         sendBroadcast(intent)
-        startBroadcastReceiver()
+        //startBroadcastReceiver() infinite loop
     }
 
     private fun startBroadcastReceiver() {
@@ -104,6 +104,11 @@ class MainActivity : ComponentActivity() {
         Handler().postDelayed({
             startMyBroadcast()
         }, 200)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(myBroadcastReceiver)
     }
 
 

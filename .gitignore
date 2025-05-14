@@ -14,3 +14,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+gradle.properties
+/keystore.properties
+google-services.json
