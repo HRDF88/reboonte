@@ -9,6 +9,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.data.webService.serviceInterface.UserApi
 import com.openclassrooms.rebonnte.domain.mapper.toDomainUser
 import com.openclassrooms.rebonnte.domain.model.User
@@ -41,6 +42,7 @@ class FirebaseUserService : UserApi {
             Log.d("AuthUI", "Sign-in failed or cancelled")
             signInDeferred?.complete(null)
         }
+        signInDeferred = null
     }
 
     /**
@@ -55,13 +57,14 @@ class FirebaseUserService : UserApi {
         }
 
         val providers = arrayListOf(
-            AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.EmailBuilder().build(),
         )
 
         val intent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
+            .setLogo(R.drawable.logo_firebase_ui)
+            .setTheme(R.style.FirebaseUITheme)
             .build()
 
         signInDeferred = CompletableDeferred()

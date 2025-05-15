@@ -1,10 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.Rebonnte" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:colorBackground">#FFFFFF</item> <!-- blanc -->
+        <item name="android:textColorPrimary">#000000</item> <!-- texte noir -->
+        <item name="colorPrimary">#43B66E</item> <!-- ton vert -->
+        <item name="colorPrimaryDark">#388E56</item>
+        <item name="colorAccent">#43B66E</item>
     </style>
+
     <style name="Theme.Rebonnte.ActionBar" parent="android:Theme.Material.Light.DarkActionBar"/>
+
+    <style name="FirebaseUITheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="colorPrimary">#43B66E</item>
+        <item name="colorPrimaryVariant">#388E56</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <item name="colorSecondary">#43B66E</item>
+        <item name="colorSecondaryVariant">#388E56</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+
+
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:colorBackground">#FFFFFF</item>
+        <item name="colorSurface">#D3D3D3</item>
+        <item name="colorOnBackground">#000000</item>
+        <item name="colorOnSurface">#000000</item>
+
+        <item name="android:textColorPrimary">#000000</item>
+
+        <item name="colorError">#B00020</item>
+        <item name="colorOnError">#FFFFFF</item>
+    </style>
+
 
 </resources>
