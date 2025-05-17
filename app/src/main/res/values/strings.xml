@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">rebonnte</string>
+
+
+    //AddAisleScreen
+    <string name="success_false_message">Error to add Aisle</string>
+    <string name="add_tittle">Add Aisle</string>
+    <string name="add_tittle_medicine">Add Medicine</string>
+    <string name="add_aisle">Enter the name of the aisle</string>
+    <string name="validate">Validate</string>
+    <string name="try_again">Try again</string>
+    <string name="error">Error</string>
+    <string name="error_display">An error has occurred,</string>
+    <string name="try_later">please try again later</string>
+
+    //AisleScreen
+    <string name="error_load_aisle">Error to load aisles</string>
+
+    //AddMedicineScreen
+    <string name="name_medicine">Enter the name of the medicine</string>
+    <string name="stock_medicine">Enter the number of the medicine</string>
+    <string name="aisle_medicine">Select the aisle of the medicine</string>
+    <string name="created_medicine">Medicine created</string>
+
+
+    //Accessibility
+    <string name="back_button">Back</string>
 </resources>

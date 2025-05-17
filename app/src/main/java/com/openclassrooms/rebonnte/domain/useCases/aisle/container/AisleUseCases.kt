@@ -6,7 +6,7 @@ import com.openclassrooms.rebonnte.domain.useCases.aisle.useCase.GetAllAislesUse
 import javax.inject.Inject
 
 data class AisleUseCases @Inject constructor(
-    private val addAisleUseCase: AddAisleUseCase,
-    private val deleteAisleByNameUseCase: DeleteAisleByNameUseCase,
-    private val getAllAislesUseCase: GetAllAislesUseCase
+    val addAisleUseCase: AddAisleUseCase,
+    val deleteAisleByNameUseCase: DeleteAisleByNameUseCase,
+    val getAllAislesUseCase: GetAllAislesUseCase
 )

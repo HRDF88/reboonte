@@ -1,34 +1,49 @@
 package com.openclassrooms.rebonnte.ui.medicine
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.domain.model.Aisle
 import com.openclassrooms.rebonnte.domain.model.Medicine
+import com.openclassrooms.rebonnte.domain.useCases.medicine.container.MedicineUseCases
+import com.openclassrooms.rebonnte.ui.addMedicine.AddMedicineUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Locale
 import java.util.Random
+import javax.inject.Inject
 
-class MedicineViewModel : ViewModel() {
-    var _medicines = MutableStateFlow<MutableList<Medicine>>(mutableListOf())
-    val medicines: StateFlow<List<Medicine>> get() = _medicines
+class MedicineViewModel @Inject constructor(private val medicineUseCase: MedicineUseCases) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(MedicineUiState())
+    val uiState: StateFlow<MedicineUiState> = _uiState
+
 
     init {
-        _medicines.value = ArrayList() // Initialiser avec une liste vide
+        loadAllMedicine()
     }
 
-    fun addRandomMedicine(aisles: List<Aisle>) {
-        val currentMedicines = ArrayList(medicines.value)
-        currentMedicines.add(
-            Medicine(
-                "Medicine " + (currentMedicines.size + 1),
-                Random().nextInt(100),
-                aisles[Random().nextInt(aisles.size)].name,
-                emptyList()
-            )
-        )
-        _medicines.value = currentMedicines
-    }
+    fun loadAllMedicine() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
+            try {
+                medicineUseCase.getAllMedicines().collect { medicines ->
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        medicine = medicines
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = R.string.error_load_aisle
+                )
+            }
+        }
+    }
+/*
     fun filterByName(name: String) {
         val currentMedicines: List<Medicine> = medicines.value
         val filteredMedicines: MutableList<Medicine> = ArrayList()
@@ -56,6 +71,6 @@ class MedicineViewModel : ViewModel() {
         val currentMedicines = ArrayList(medicines.value)
         currentMedicines.sortWith(Comparator.comparingInt(Medicine::stock))
         _medicines.value = currentMedicines
-    }
+    }*/
 }
 

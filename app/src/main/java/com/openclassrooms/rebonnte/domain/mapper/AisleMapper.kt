@@ -5,11 +5,11 @@ import com.openclassrooms.rebonnte.domain.model.Aisle
 
 fun DocumentSnapshot.toAisle(): Aisle? {
     val data = this.data ?: return null
-    return Aisle(name = data["name"] as? String ?:"")
+    return Aisle(name = data["name"] as? String ?: "")
 }
 
 
-fun Aisle.toFirestoreMap() : Map<String, Any>{
+fun Aisle.toFirestoreMap(): Map<String, Any> {
     return mapOf(
         "name" to name
     )

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,7 +39,7 @@ class AisleDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val name = intent.getStringExtra("nameAisle") ?: "Unknown"
-        val viewModel = ViewModelProvider(MainActivity.mainActivity)[MedicineViewModel::class.java]
+        val viewModel = ViewModelProvider(this)[MedicineViewModel::class.java]
         setContent {
             RebonnteTheme {
                 AisleDetailScreen(name, viewModel)
@@ -84,6 +85,6 @@ fun MedicineItem(medicine: Medicine, onClick: (String) -> Unit) {
             Text(text = medicine.name, fontWeight = FontWeight.Bold)
             Text(text = "Stock: ${medicine.stock}", color = Color.Gray)
         }
-        Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Arrow")
+        Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Arrow")
     }
 }
