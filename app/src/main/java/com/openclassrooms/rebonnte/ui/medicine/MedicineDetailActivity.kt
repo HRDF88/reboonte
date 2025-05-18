@@ -26,6 +26,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -55,9 +56,10 @@ class MedicineDetailActivity : ComponentActivity() {
 
 @Composable
 fun MedicineDetailScreen(name: String, viewModel: MedicineViewModel) {
-    val medicines by viewModel.medicines.collectAsState(initial = emptyList())
+    val state by viewModel.uiState.collectAsState()
+    val medicines = state.medicine
     val medicine = medicines.find { it.name == name } ?: return
-    var stock by remember { mutableStateOf(medicine.stock) }
+    var stock by remember { mutableIntStateOf(medicine.stock) }
 
     Scaffold { paddingValues ->
         Column(

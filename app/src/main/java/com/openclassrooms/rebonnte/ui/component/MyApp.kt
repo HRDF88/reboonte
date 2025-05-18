@@ -41,6 +41,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.rebonnte.currentRoute
 import com.openclassrooms.rebonnte.ui.addAisle.AddAisleScreen
+import com.openclassrooms.rebonnte.ui.addMedicine.AddMedicineScreen
 import com.openclassrooms.rebonnte.ui.aisle.AisleScreen
 import com.openclassrooms.rebonnte.ui.aisle.AisleViewModel
 import com.openclassrooms.rebonnte.ui.medicine.MedicineScreen
@@ -59,6 +60,9 @@ fun MyApp() {
     RebonnteTheme {
         if (route == "addAisle") {
             AddAisleScreen(navController = navController, viewModel = hiltViewModel())
+        }
+        if (route == "addMedicine") {
+            AddMedicineScreen(navController = navController, viewModel = hiltViewModel())
         } else {
             Scaffold(
                 topBar = {
@@ -92,7 +96,7 @@ fun MyApp() {
                                             ) {
                                                 DropdownMenuItem(
                                                     onClick = {
-                                                        medicineViewModel.sortByNone()
+                                                        medicineViewModel.loadAllMedicine()
                                                         expanded = false
                                                     },
                                                     text = { Text("Sort by None") }
@@ -150,7 +154,7 @@ fun MyApp() {
                 floatingActionButton = {
                     FloatingActionButton(onClick = {
                         if (route == "medicine") {
-                            navController.navigate(route = "addAisle")
+                            navController.navigate(route = "addMedicine")
                         } else if (route == "aisle") {
                             navController.navigate(route = "addAisle")
                         }
@@ -168,6 +172,12 @@ fun MyApp() {
                     composable("medicine") { MedicineScreen(medicineViewModel) }
                     composable("addAisle") {
                         AddAisleScreen(
+                            navController = navController,
+                            viewModel = hiltViewModel()
+                        )
+                    }
+                    composable(route = "addMedicine") {
+                        AddMedicineScreen(
                             navController = navController,
                             viewModel = hiltViewModel()
                         )

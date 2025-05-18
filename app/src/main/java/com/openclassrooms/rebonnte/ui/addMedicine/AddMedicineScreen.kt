@@ -38,7 +38,7 @@ import com.openclassrooms.rebonnte.ui.theme.vertRebonnte
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddAisleScreen(
+fun AddMedicineScreen(
     navController: NavController,
     viewModel: AddMedicineViewModel
 ) {

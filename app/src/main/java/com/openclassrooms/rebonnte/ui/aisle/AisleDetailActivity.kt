@@ -51,7 +51,8 @@ class AisleDetailActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AisleDetailScreen(name: String, viewModel: MedicineViewModel) {
-    val medicines by viewModel.medicines.collectAsState(initial = emptyList())
+    val state by viewModel.uiState.collectAsState()
+    val medicines = state.medicine
     val filteredMedicines = medicines.filter { it.nameAisle == name }
     val context = LocalContext.current
 
