@@ -41,6 +41,7 @@ fun AddMedicineForm(
     selectedAisles: List<Aisle>,
     onAisleSelected: (Aisle) -> Unit,
     onAisleUnselected: (Aisle) -> Unit,
+    enabled: Boolean = true
 ) {
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
@@ -57,7 +58,9 @@ fun AddMedicineForm(
             onValueChange = { newText ->
                 onNameChange(TextUtils.formatMedicineName(newText))
             },
-            label = { Text(stringResource(R.string.name_medicine)) }
+            label = { Text(stringResource(R.string.name_medicine)) },
+            enabled = enabled,
+            singleLine = true
         )
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -88,9 +91,12 @@ fun AddMedicineForm(
                             Checkbox(
                                 checked = selectedAisles.contains(aisle),
                                 onCheckedChange = {
-                                    if (it) onAisleSelected(aisle)
-                                    else onAisleUnselected(aisle)
-                                }
+                                    if (enabled) {
+                                        if (it) onAisleSelected(aisle)
+                                        else onAisleUnselected(aisle)
+                                    }
+                                },
+                                enabled = enabled
                             )
                             Spacer(Modifier.width(8.dp))
                             Text(aisle.name)
@@ -109,7 +115,7 @@ fun AddMedicineForm(
 
         Button(
             onClick = onClick,
-            enabled = name.isNotBlank()
+            enabled = enabled && name.isNotBlank() && selectedAisles.isNotEmpty()
 
 
         ) { Text(text = stringResource(R.string.validate)) }

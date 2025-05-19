@@ -31,8 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.firebase.Timestamp
 import com.openclassrooms.rebonnte.R
+import com.openclassrooms.rebonnte.domain.model.Aisle
 import com.openclassrooms.rebonnte.domain.model.History
 import com.openclassrooms.rebonnte.domain.model.Medicine
+import com.openclassrooms.rebonnte.ui.component.AddMedicineForm
 import com.openclassrooms.rebonnte.ui.component.LoadingComponent
 import com.openclassrooms.rebonnte.ui.theme.vertRebonnte
 
@@ -55,7 +57,8 @@ fun AddMedicineScreen(
 
 
     var name by remember { mutableStateOf("") }
-    var aisle by remember { mutableStateOf("") }
+    val listAisle = medicineState.aisle
+    var selectedAisle by remember { mutableStateOf<Aisle?>(null) }
     val user = medicineState.user?.email.toString()
     var addTrigger by remember { mutableStateOf(false) }
 
@@ -64,7 +67,7 @@ fun AddMedicineScreen(
             val medicineToAdd = Medicine(
                 name = name,
                 stock = 1,
-                nameAisle = aisle,
+                nameAisle = selectedAisle?.name ?: "",
                 histories = listOf(
                     History(
                         date = Timestamp.now().toString(),
@@ -74,19 +77,27 @@ fun AddMedicineScreen(
                     )
                 )
             )
-            viewModel.addAisle(medicineToAdd)
+            viewModel.addMedicine(medicineToAdd)
             addTrigger = false // reset
+
+        }
+    }
+
+    LaunchedEffect(medicineState.successMessage) {
+        medicineState.successMessage?.let {
+            Toast.makeText(context, context.getString(it), Toast.LENGTH_SHORT).show()
+            viewModel.resetMessage()
             navController.popBackStack()
         }
     }
 
-
-    SideEffect {
-        if (medicineState.error != null) {
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+    LaunchedEffect(medicineState.error) {
+        medicineState.error?.let {
+            Toast.makeText(context, context.getString(it), Toast.LENGTH_SHORT).show()
             viewModel.resetMessage()
         }
     }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -124,7 +135,15 @@ fun AddMedicineScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-
+            AddMedicineForm(
+                name = name,
+                onNameChange = { name = it },
+                onClick = { addTrigger = true },
+                aisleList = listAisle,
+                selectedAisles = listOfNotNull(selectedAisle),
+                onAisleSelected = { selectedAisle = it },
+                onAisleUnselected = { selectedAisle = null }
+            )
         }
     }
 }

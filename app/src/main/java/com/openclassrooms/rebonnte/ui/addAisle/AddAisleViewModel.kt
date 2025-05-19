@@ -29,6 +29,7 @@ class AddAisleViewModel @Inject constructor(private val aisleUseCase: AisleUseCa
                     aisleUseCase.addAisleUseCase(aisle)
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
+                        successMessage = R.string.add_aisle_success
                     )
 
                 }
@@ -49,7 +50,7 @@ class AddAisleViewModel @Inject constructor(private val aisleUseCase: AisleUseCa
      * This function is useful to clear any displayed message after it has been shown to the user.
      */
     fun resetMessage() {
-        _uiState.value = _uiState.value.copy(error = null)
+        _uiState.value = _uiState.value.copy(error = null, successMessage = null)
     }
 
 }

@@ -16,7 +16,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,10 +43,6 @@ fun AddAisleScreen(
 
     val aisleState by viewModel.uiState.collectAsState()
 
-    val errorMessage = aisleState.error?.let {
-        stringResource(id = it)
-    } ?: ""
-
     val context = LocalContext.current
     val backButton = stringResource(R.string.back_button)
 
@@ -64,10 +59,17 @@ fun AddAisleScreen(
         }
     }
 
+    LaunchedEffect(aisleState.successMessage) {
+        aisleState.successMessage?.let {
+            Toast.makeText(context, context.getString(it), Toast.LENGTH_SHORT).show()
+            viewModel.resetMessage()
+            navController.popBackStack()
+        }
+    }
 
-    SideEffect {
-        if (aisleState.error != null) {
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+    LaunchedEffect(aisleState.error) {
+        aisleState.error?.let {
+            Toast.makeText(context, context.getString(it), Toast.LENGTH_SHORT).show()
             viewModel.resetMessage()
         }
     }

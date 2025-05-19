@@ -3,20 +3,23 @@ package com.openclassrooms.rebonnte.ui.medicine
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.rebonnte.R
-import com.openclassrooms.rebonnte.domain.model.Aisle
+import com.openclassrooms.rebonnte.domain.model.History
 import com.openclassrooms.rebonnte.domain.model.Medicine
+import com.openclassrooms.rebonnte.domain.model.User
 import com.openclassrooms.rebonnte.domain.useCases.medicine.container.MedicineUseCases
-import com.openclassrooms.rebonnte.ui.addMedicine.AddMedicineUiState
+import com.openclassrooms.rebonnte.domain.useCases.user.container.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.Locale
-import java.util.Random
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class MedicineViewModel @Inject constructor(private val medicineUseCase: MedicineUseCases) :
+class MedicineViewModel @Inject constructor(
+    private val medicineUseCase: MedicineUseCases,
+    private val userUseCases: UserUseCases,
+    ) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(MedicineUiState())
@@ -25,6 +28,7 @@ class MedicineViewModel @Inject constructor(private val medicineUseCase: Medicin
 
     init {
         loadAllMedicine()
+        loadUser()
     }
 
     fun loadAllMedicine() {
@@ -107,37 +111,95 @@ class MedicineViewModel @Inject constructor(private val medicineUseCase: Medicin
         }
     }
 
+    private fun loadUser() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+
+            try {
+                val domainUser: User? = userUseCases.getCurrentUser()
+
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    user = domainUser
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = R.string.success_false_message
+                )
+            }
+        }
+    }
+    fun updateMedicineStock(
+        medicine: Medicine,
+        newStock: Int,
+        userId: String,
+        details: String
+    ) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            val updatedHistories = medicine.histories.toMutableList().apply {
+                add(
+                    History(
+                        medicineName = medicine.name,
+                        userId = userId,
+                        date = Date().toString(),
+                        details = details
+                    )
+                )
+            }
+            val updatedMedicine = medicine.copy(
+                stock = newStock,
+                histories = updatedHistories
+            )
+
+            try {
+                medicineUseCase.updateMedicine(updatedMedicine)
+
+                val updatedList = _uiState.value.medicine
+
+
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    medicine = updatedList
+                )
+
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = R.string.update_failed
+                )
+
+            }
+
+        }
+    }
+    fun incrementStock(medicine: Medicine, userId: String?, detail: String) {
+
+        val newStock = medicine.stock + 1
+        if (userId != null) {
+            updateMedicineStock(medicine, newStock, userId, detail)
+        }
+    }
+
+    fun decrementStock(
+        medicine: Medicine,
+        userId: String?,
+        detail : String
+    ) {
+        val oldStock = medicine.stock
+        if (oldStock <= 0) return
+        val newStock = oldStock - 1
+        if (userId != null) {
+            updateMedicineStock(medicine, newStock, userId, detail)
+        }
+    }
+
+
+
+
     fun resetMessage() {
         _uiState.value = _uiState.value.copy(error = null)
     }
-    /*
-        fun filterByName(name: String) {
-            val currentMedicines: List<Medicine> = medicines.value
-            val filteredMedicines: MutableList<Medicine> = ArrayList()
-            for (medicine in currentMedicines) {
-                if (medicine.name.lowercase(Locale.getDefault())
-                        .contains(name.lowercase(Locale.getDefault()))
-                ) {
-                    filteredMedicines.add(medicine)
-                }
-            }
-            _medicines.value = filteredMedicines
-        }
-
-        fun sortByNone() {
-            _medicines.value = medicines.value.toMutableList() // Pas de tri
-        }
-
-        fun sortByName() {
-            val currentMedicines = ArrayList(medicines.value)
-            currentMedicines.sortWith(Comparator.comparing(Medicine::name))
-            _medicines.value = currentMedicines
-        }
-
-        fun sortByStock() {
-            val currentMedicines = ArrayList(medicines.value)
-            currentMedicines.sortWith(Comparator.comparingInt(Medicine::stock))
-            _medicines.value = currentMedicines
-        }*/
 }
 

@@ -12,6 +12,7 @@
     <string name="error">Error</string>
     <string name="error_display">An error has occurred,</string>
     <string name="try_later">please try again later</string>
+    <string name="add_aisle_success">Aisle add successfully</string>
 
     //AisleScreen
     <string name="error_load_aisle">Error to load aisles</string>
@@ -21,6 +22,16 @@
     <string name="stock_medicine">Enter the number of the medicine</string>
     <string name="aisle_medicine">Select the aisle of the medicine</string>
     <string name="created_medicine">Medicine created</string>
+    <string name="add_medicine_success">Medicine add successfully</string>
+
+    //MedicineScreen
+    <string name="no_results_found">No results found</string>
+
+    //MedicineDetail
+    <string name="updated_medicine_details">Updated medicine details :</string>
+    <string name="updated_medicine_details_with_stock">Stock updated from %1$d to %2$d.</string>
+    <string name="update_failed">Error to update medicine</string>
+
 
 
     //Accessibility

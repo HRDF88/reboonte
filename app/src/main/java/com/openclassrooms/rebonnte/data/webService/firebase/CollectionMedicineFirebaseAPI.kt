@@ -81,7 +81,7 @@ class CollectionMedicineFirebaseAPI @Inject constructor(
         val end = lowercaseQuery + '\uf8ff'
 
         val registration = medicineCollection
-            .orderBy("name_lowercase")
+            .orderBy("name")
             .startAt(lowercaseQuery)
             .endAt(end)
             .addSnapshotListener { snapshot, error ->
