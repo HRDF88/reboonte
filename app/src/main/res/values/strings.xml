@@ -1,6 +1,25 @@
 <resources>
     <string name="app_name">rebonnte</string>
 
+    //MyApp
+    <string name="logout_title">Logout</string>
+    <string name="logout_message">Do you really want to log out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="aisle">Aisle</string>
+    <string name="medicine">Medicines</string>
+    <string name="sort_by_none">Sort by None</string>
+    <string name="sort_by_name">Sort by Name</string>
+    <string name="sort_by_stock">Sort by Stock</string>
+
+        //Accessibility
+    <string name="content_desc_logout">Log out</string>
+    <string name="content_desc_add_aisle">Add Aisle</string>
+    <string name="content_desc_add_medicine">Add medicine</string>
+    <string name="content_desc_more_options">More options</string>
+    <string name="content_desc_home">Go to aisle list</string>
+    <string name="content_desc_medicine">Go to medicine list</string>
+
 
     //AddAisleScreen
     <string name="success_false_message">Error to add Aisle</string>
@@ -31,6 +50,9 @@
     <string name="updated_medicine_details">Updated medicine details :</string>
     <string name="updated_medicine_details_with_stock">Stock updated from %1$d to %2$d.</string>
     <string name="update_failed">Error to update medicine</string>
+
+    //HistoryItem
+    <string name="invalid_date">Invalid Date</string>
 
 
 

@@ -43,5 +43,31 @@
             android:name="com.firebase.ui.auth.ui.email.EmailActivity"
             android:theme="@style/FirebaseUITheme"
             tools:ignore="Instantiatable" />
+        <activity
+            android:name="com.firebase.ui.auth.ui.email.RecoverPasswordActivity"
+            android:theme="@style/FirebaseUITheme"
+            tools:ignore="Instantiatable" />
+
+        <activity
+            android:name="com.firebase.ui.auth.ui.phone.PhoneActivity"
+            android:theme="@style/FirebaseUITheme"
+            tools:ignore="Instantiatable" />
+
+        <activity
+            android:name="com.firebase.ui.auth.ui.email.WelcomeBackPasswordPromptActivity"
+            android:theme="@style/FirebaseUITheme"
+            tools:ignore="Instantiatable" />
+
+        <activity
+            android:name="com.firebase.ui.auth.ui.email.WelcomeBackEmailLinkPromptActivity"
+            android:theme="@style/FirebaseUITheme"
+            tools:ignore="Instantiatable" />
+
+        <activity
+            android:name="com.firebase.ui.auth.ui.IdpResponseActivity"
+            android:theme="@style/FirebaseUITheme"
+            tools:ignore="Instantiatable" />
+
+
     </application>
 </manifest>

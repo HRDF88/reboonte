@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.rebonnte.MainActivity
 import com.openclassrooms.rebonnte.domain.model.Medicine
+import com.openclassrooms.rebonnte.ui.component.AisleDetailScreen
 import com.openclassrooms.rebonnte.ui.medicine.MedicineDetailActivity
 import com.openclassrooms.rebonnte.ui.medicine.MedicineViewModel
 import com.openclassrooms.rebonnte.ui.theme.RebonnteTheme
@@ -50,44 +51,5 @@ class AisleDetailActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AisleDetailScreen(name: String, viewModel: MedicineViewModel) {
-    val state by viewModel.uiState.collectAsState()
-    val medicines = state.medicine
-    val filteredMedicines = medicines.filter { it.nameAisle == name }
-    val context = LocalContext.current
 
-    Scaffold { paddingValues ->
-        LazyColumn(
-            contentPadding = paddingValues,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(filteredMedicines) { medicine ->
-                MedicineItem(medicine = medicine, onClick = { name ->
-                    val intent = Intent(context, MedicineDetailActivity::class.java).apply {
-                        putExtra("nameMedicine", name)
-                    }
-                    context.startActivity(intent)
-                })
-            }
-        }
-    }
-}
 
-@Composable
-fun MedicineItem(medicine: Medicine, onClick: (String) -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick(medicine.name) }
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column {
-            Text(text = medicine.name, fontWeight = FontWeight.Bold)
-            Text(text = "Stock: ${medicine.stock}", color = Color.Gray)
-        }
-        Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Arrow")
-    }
-}

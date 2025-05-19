@@ -1,6 +1,6 @@
 package com.openclassrooms.rebonnte.utils.text
 
-object TextUtils {
+object TextUtils  {
     fun formatAisleName(input: String): String {
         return input.lowercase()
     }

@@ -16,7 +16,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.firebase.Timestamp
 import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.domain.model.Aisle
 import com.openclassrooms.rebonnte.domain.model.History
@@ -37,6 +35,7 @@ import com.openclassrooms.rebonnte.domain.model.Medicine
 import com.openclassrooms.rebonnte.ui.component.AddMedicineForm
 import com.openclassrooms.rebonnte.ui.component.LoadingComponent
 import com.openclassrooms.rebonnte.ui.theme.vertRebonnte
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,10 +45,6 @@ fun AddMedicineScreen(
 ) {
 
     val medicineState by viewModel.uiState.collectAsState()
-
-    val errorMessage = medicineState.error?.let {
-        stringResource(id = it)
-    } ?: ""
 
     val context = LocalContext.current
     val backButton = stringResource(R.string.back_button)
@@ -70,7 +65,7 @@ fun AddMedicineScreen(
                 nameAisle = selectedAisle?.name ?: "",
                 histories = listOf(
                     History(
-                        date = Timestamp.now().toString(),
+                        date = Date().toString(),
                         medicineName = name,
                         details = createdMedicineMessage,
                         userId = user

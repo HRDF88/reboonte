@@ -1,7 +1,10 @@
 package com.openclassrooms.rebonnte.ui.medicine
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.openclassrooms.rebonnte.MainActivity
 import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.domain.model.History
 import com.openclassrooms.rebonnte.domain.model.Medicine
@@ -11,6 +14,7 @@ import com.openclassrooms.rebonnte.domain.useCases.user.container.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -130,7 +134,7 @@ class MedicineViewModel @Inject constructor(
             }
         }
     }
-    fun updateMedicineStock(
+    private fun updateMedicineStock(
         medicine: Medicine,
         newStock: Int,
         userId: String,
@@ -195,7 +199,19 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    fun logOut(context : Context) {
+        viewModelScope.launch {
+            userUseCases.signOut()
+            _user.value = null
+            _uiState.value = _uiState.value.copy(user = null)
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(intent)
+        }
+    }
 
+    private val _user = MutableStateFlow<User?>(userUseCases.getCurrentUser())
+    val user: StateFlow<User?> = _user.asStateFlow()
 
 
     fun resetMessage() {

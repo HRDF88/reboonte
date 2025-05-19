@@ -30,7 +30,6 @@ class AuthViewModel @Inject constructor(private val userUseCases: UserUseCases) 
     /** Appelée depuis onActivityResult pour propager le résultat */
     fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         userUseCases.onSignInResult(result)
-        // récupère à nouveau l’utilisateur courant
         _user.value = userUseCases.getCurrentUser()
 
     }

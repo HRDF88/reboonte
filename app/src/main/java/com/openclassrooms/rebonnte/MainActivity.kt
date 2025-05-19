@@ -93,10 +93,6 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(context, "Update reçu", Toast.LENGTH_SHORT).show()
         }
     }
-
-    companion object {
-        lateinit var mainActivity: MainActivity
-    }
 }
 
 

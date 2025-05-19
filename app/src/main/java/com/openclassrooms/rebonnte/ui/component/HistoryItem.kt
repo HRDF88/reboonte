@@ -8,9 +8,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.domain.model.History
+import com.openclassrooms.rebonnte.utils.date.DateFormatter
 
 @Composable
 fun HistoryItem(history: History) {
@@ -23,7 +26,11 @@ fun HistoryItem(history: History) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = history.medicineName, fontWeight = FontWeight.Bold)
             Text(text = "User: ${history.userId}")
-            Text(text = "Date: ${history.date}")
+            Text(text = "Date:  ${
+                DateFormatter.parseToTimestamp(history.date)
+                    ?.let { DateFormatter.formatToLocalizedDate(it) }
+                    ?: stringResource(R.string.invalid_date)
+            }")
             Text(text = "Details: ${history.details}")
         }
     }

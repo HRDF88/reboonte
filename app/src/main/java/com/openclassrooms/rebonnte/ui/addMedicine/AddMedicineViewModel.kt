@@ -75,7 +75,7 @@ class AddMedicineViewModel @Inject constructor(
         }
     }
 
-    fun loadAllAisle() {
+    private fun loadAllAisle() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 

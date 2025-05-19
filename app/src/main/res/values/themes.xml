@@ -1,10 +1,10 @@
 <resources>
-    <style name="Theme.Rebonnte" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.Rebonnte" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:colorBackground">#FFFFFF</item> <!-- blanc -->
-        <item name="android:textColorPrimary">#000000</item> <!-- texte noir -->
-        <item name="colorPrimary">#43B66E</item> <!-- ton vert -->
+        <item name="android:colorBackground">#FFFFFF</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="colorPrimary">#43B66E</item>
         <item name="colorPrimaryDark">#388E56</item>
         <item name="colorAccent">#43B66E</item>
     </style>
