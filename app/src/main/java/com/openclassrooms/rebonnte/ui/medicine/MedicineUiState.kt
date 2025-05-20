@@ -8,4 +8,5 @@ data class MedicineUiState(
     val error: Int? = null,
     val medicine: List<Medicine> = emptyList(),
     val user : User? = null,
+    val successMessage: Int? = null,
 )

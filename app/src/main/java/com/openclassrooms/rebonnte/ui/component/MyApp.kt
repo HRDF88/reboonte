@@ -229,7 +229,7 @@ fun MyApp() {
                                         contentDescription = stringResource(R.string.content_desc_home)
                                     )
                                 },
-                                label = { Text("Aisle") },
+                                label = { Text(stringResource(R.string.aisle)) },
                                 selected = currentRoute(navController) == "aisle",
                                 onClick = { navController.navigate("aisle") }
                             )
@@ -240,7 +240,7 @@ fun MyApp() {
                                         contentDescription = stringResource(R.string.content_desc_medicine)
                                     )
                                 },
-                                label = { Text("Medicine") },
+                                label = { Text(stringResource(R.string.medicine)) },
                                 selected = currentRoute(navController) == "medicine",
                                 onClick = { navController.navigate("medicine") }
                             )

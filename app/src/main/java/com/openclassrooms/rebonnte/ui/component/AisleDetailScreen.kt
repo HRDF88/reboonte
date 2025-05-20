@@ -31,7 +31,7 @@ fun AisleDetailScreen(name: String, viewModel: MedicineViewModel) {
                         putExtra("nameMedicine", name)
                     }
                     context.startActivity(intent)
-                })
+                }, isTalkBackEnabled = false, onDelete = {})
             }
         }
     }

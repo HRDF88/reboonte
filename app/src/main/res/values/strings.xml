@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">rebonnte</string>
+    <string name="stock">Stock</string>
+    <string name="history">History</string>
 
     //MyApp
     <string name="logout_title">Logout</string>
@@ -12,7 +14,8 @@
     <string name="sort_by_name">Sort by Name</string>
     <string name="sort_by_stock">Sort by Stock</string>
 
-        //Accessibility
+
+    //Accessibility
     <string name="content_desc_logout">Log out</string>
     <string name="content_desc_add_aisle">Add Aisle</string>
     <string name="content_desc_add_medicine">Add medicine</string>
@@ -45,6 +48,14 @@
 
     //MedicineScreen
     <string name="no_results_found">No results found</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete_title">Confirm deletion</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this medicine?</string>
+    <string name="error_delete_medicine">Failed to delete medicine</string>
+    <string name="delete_medicine_success">Medicine deleted successfully</string>
+        //Accessibility
+    <string name="delete_medicine_description">Delete medicine %1$s</string>
+    <string name="medicine_deleted_announcement">Medicine %1$s has been deleted</string>
 
     //MedicineDetail
     <string name="updated_medicine_details">Updated medicine details :</string>
@@ -54,6 +65,16 @@
     //HistoryItem
     <string name="invalid_date">Invalid Date</string>
 
+    //MedicineItem Accessibility
+    <string name="medicine_name_content_description">Medicine name : %1$s.</string>
+    <string name="medicine_stock_content_description">the stock of %1$s is %2$d</string>
+    <string name="click_for_details">click for details</string>
+
+    //MedicineDetailScreen Accessibility
+    <string name="minus_One">Minus one, click to decrease the stock</string>
+    <string name="plus_one">Plus one, click to increase the stock</string>
+    <string name="stock_action">now the stock of %1$s is %2$d</string>
+    <string name="medicine_aisle_content_description">Aisle of medicine is : %1$s</string>
 
 
     //Accessibility

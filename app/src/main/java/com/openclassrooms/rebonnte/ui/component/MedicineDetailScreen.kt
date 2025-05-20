@@ -27,9 +27,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.ui.medicine.MedicineViewModel
+import com.openclassrooms.rebonnte.utils.accessibility.AccessibilityAnnouncer
 
 @Composable
 fun MedicineDetailScreen(name: String, viewModel: MedicineViewModel) {
@@ -39,6 +43,15 @@ fun MedicineDetailScreen(name: String, viewModel: MedicineViewModel) {
     var stock by remember { mutableIntStateOf(medicine.stock) }
     val userId = state.user?.email ?: "unknown"
     val context = LocalContext.current
+
+
+    //Accessibility
+    val medicineNameContentDescription =
+        stringResource(R.string.medicine_name_content_description, medicine.name)
+    val medicineStockContentDescription =
+        stringResource(R.string.medicine_stock_content_description, medicine.name, medicine.stock)
+    val medicineAisleContentDescription =
+        stringResource(R.string.medicine_aisle_content_description, medicine.nameAisle)
 
 
 
@@ -53,15 +66,20 @@ fun MedicineDetailScreen(name: String, viewModel: MedicineViewModel) {
                 onValueChange = {},
                 label = { Text("Name") },
                 enabled = false,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { contentDescription = medicineNameContentDescription }
+
             )
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = medicine.nameAisle,
                 onValueChange = {},
-                label = { Text("Aisle") },
+                label = { Text(stringResource(R.string.aisle)) },
                 enabled = false,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { contentDescription = medicineAisleContentDescription }
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
@@ -69,37 +87,58 @@ fun MedicineDetailScreen(name: String, viewModel: MedicineViewModel) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 IconButton(onClick = {
-                    val detail = context.getString(R.string.updated_medicine_details_with_stock, stock, stock - 1)
+                    val detail = context.getString(
+                        R.string.updated_medicine_details_with_stock,
+                        stock,
+                        stock - 1
+                    )
                     viewModel.decrementStock(medicine, userId, detail)
                     stock--
+                    AccessibilityAnnouncer.announce(
+                        context,
+                        context.getString(R.string.stock_action, medicine.name, stock)
+                    )
 
                 }) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowDown,
-                        contentDescription = "Minus One"
+                        contentDescription = stringResource(R.string.minus_One)
                     )
                 }
                 TextField(
                     value = medicine.stock.toString(),
                     onValueChange = {},
-                    label = { Text("Stock") },
+                    label = { Text(stringResource(R.string.stock)) },
                     enabled = false,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
+                        .semantics { contentDescription = medicineStockContentDescription }
                 )
                 IconButton(onClick = {
-                    val detail = context.getString(R.string.updated_medicine_details_with_stock, stock, stock + 1)
+                    val detail = context.getString(
+                        R.string.updated_medicine_details_with_stock,
+                        stock,
+                        stock + 1
+                    )
                     viewModel.incrementStock(medicine, userId, detail)
                     stock++
+                    AccessibilityAnnouncer.announce(
+                        context,
+                        context.getString(R.string.stock_action, medicine.name, stock)
+                    )
 
                 }) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "Plus One"
+                        contentDescription = stringResource(R.string.plus_one)
                     )
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "History", style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = stringResource(R.string.history),
+                style = MaterialTheme.typography.titleLarge
+            )
             Spacer(modifier = Modifier.height(8.dp))
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(medicine.histories) { history ->

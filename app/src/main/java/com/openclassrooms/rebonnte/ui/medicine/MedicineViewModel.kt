@@ -23,7 +23,7 @@ import javax.inject.Inject
 class MedicineViewModel @Inject constructor(
     private val medicineUseCase: MedicineUseCases,
     private val userUseCases: UserUseCases,
-    ) :
+) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(MedicineUiState())
@@ -134,6 +134,7 @@ class MedicineViewModel @Inject constructor(
             }
         }
     }
+
     private fun updateMedicineStock(
         medicine: Medicine,
         newStock: Int,
@@ -178,6 +179,7 @@ class MedicineViewModel @Inject constructor(
 
         }
     }
+
     fun incrementStock(medicine: Medicine, userId: String?, detail: String) {
 
         val newStock = medicine.stock + 1
@@ -189,7 +191,7 @@ class MedicineViewModel @Inject constructor(
     fun decrementStock(
         medicine: Medicine,
         userId: String?,
-        detail : String
+        detail: String
     ) {
         val oldStock = medicine.stock
         if (oldStock <= 0) return
@@ -199,7 +201,7 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
-    fun logOut(context : Context) {
+    fun logOut(context: Context) {
         viewModelScope.launch {
             userUseCases.signOut()
             _user.value = null
@@ -207,6 +209,23 @@ class MedicineViewModel @Inject constructor(
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
+        }
+    }
+
+    suspend fun deleteMedicine(nameMedicine: String) {
+        try {
+            viewModelScope.launch {
+                medicineUseCase.deleteMedicineByName(nameMedicine)
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    successMessage = R.string.delete_medicine_success
+                )
+            }
+        } catch (e: Exception) {
+            _uiState.value = _uiState.value.copy(
+                isLoading = false,
+                error = R.string.error_delete_medicine
+            )
         }
     }
 
