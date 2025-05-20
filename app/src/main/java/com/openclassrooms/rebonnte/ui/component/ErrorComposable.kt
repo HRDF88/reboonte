@@ -53,7 +53,7 @@ fun ErrorComposable(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.exclamation),
-                contentDescription = "Icon",
+                contentDescription = "",
                 modifier = Modifier
                     .align(Alignment.Center)
                     .size(100.dp),

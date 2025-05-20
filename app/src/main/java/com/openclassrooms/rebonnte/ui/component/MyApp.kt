@@ -40,27 +40,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.rebonnte.R
+import com.openclassrooms.rebonnte.SetupNavGraph
 import com.openclassrooms.rebonnte.currentRoute
 import com.openclassrooms.rebonnte.ui.addAisle.AddAisleScreen
 import com.openclassrooms.rebonnte.ui.addMedicine.AddMedicineScreen
-import com.openclassrooms.rebonnte.ui.aisle.AisleScreen
 import com.openclassrooms.rebonnte.ui.aisle.AisleViewModel
-import com.openclassrooms.rebonnte.ui.medicine.MedicineScreen
 import com.openclassrooms.rebonnte.ui.medicine.MedicineViewModel
 import com.openclassrooms.rebonnte.ui.theme.RebonnteTheme
 import com.openclassrooms.rebonnte.utils.accessibility.AccessibilityAnnouncer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyApp() {
-    val navController = rememberNavController()
-    val medicineViewModel: MedicineViewModel = hiltViewModel()
-    val aisleViewModel: AisleViewModel = hiltViewModel()
+fun MyApp(
+    navController: NavHostController,
+    medicineViewModel: MedicineViewModel,
+    aisleViewModel: AisleViewModel
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val route = navBackStackEntry?.destination?.route
     val context = LocalContext.current
@@ -118,9 +116,10 @@ fun MyApp() {
                         Column(verticalArrangement = Arrangement.spacedBy((-1).dp)) {
                             TopAppBar(
                                 title = {
-                                    if (route == "aisle") Text(text = stringResource(R.string.aisle)) else Text(
-                                        text = stringResource(R.string.medicine)
-                                    )
+                                    when (route) {
+                                        "aisle" -> Text(stringResource(R.string.aisle))
+                                        "medicine" -> Text(stringResource(R.string.medicine))
+                                    }
                                 },
                                 actions = {
                                     Icon(
@@ -257,29 +256,16 @@ fun MyApp() {
                             Icon(Icons.Default.Add, contentDescription = addContentDescription)
                         }
                     }
-                ) {
-                    NavHost(
-                        modifier = Modifier.padding(it),
+                ) {innerPadding ->
+                SetupNavGraph(
                         navController = navController,
-                        startDestination = "aisle"
-                    ) {
-                        composable("aisle") { AisleScreen(aisleViewModel) }
-                        composable("medicine") { MedicineScreen(medicineViewModel) }
-                        composable("addAisle") {
-                            AddAisleScreen(
-                                navController = navController,
-                                viewModel = hiltViewModel()
-                            )
-                        }
-                        composable(route = "addMedicine") {
-                            AddMedicineScreen(
-                                navController = navController,
-                                viewModel = hiltViewModel()
-                            )
-                        }
-                    }
+                        medicineViewModel = medicineViewModel,
+                        aisleViewModel = aisleViewModel,
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }
     }
 }
+

@@ -24,7 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.domain.model.Aisle
 import com.openclassrooms.rebonnte.ui.component.ErrorComposable
 import com.openclassrooms.rebonnte.ui.component.LoadingComponent
@@ -66,9 +69,9 @@ fun AisleScreen(viewModel: AisleViewModel) {
 }
 
 
-
 @Composable
 fun AisleItem(aisle: Aisle, onClick: () -> Unit) {
+    val nameContentDescription = stringResource(R.string.name_of_aisle,aisle.name)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,8 +79,17 @@ fun AisleItem(aisle: Aisle, onClick: () -> Unit) {
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = aisle.name, style = MaterialTheme.typography.bodyMedium, color = Color.Black)
-        Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Arrow")
+        Text(
+            text = aisle.name,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.Black,
+            modifier = Modifier.semantics { contentDescription = nameContentDescription })
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = stringResource(
+                R.string.click_for_details
+            )
+        )
     }
 }
 

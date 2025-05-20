@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">rebonnte</string>
+    <string name="stock">Stock</string>
+    <string name="history">Historique :</string>
+
+    //MyApp
+    <string name="logout_title">Déconnexion</string>
+    <string name="logout_message">Voulez-vous vraiment vous déconnecter ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="aisle">Rayons</string>
+    <string name="medicine">Médicaments</string>
+    <string name="sort_by_none">Sans tri</string>
+    <string name="sort_by_name">Trier par nom</string>
+    <string name="sort_by_stock">Trier par stock</string>
+
+    //Accessibility
+    <string name="content_desc_logout">Se déconnecter</string>
+    <string name="content_desc_add_aisle">Ajouter un rayon</string>
+    <string name="content_desc_add_medicine">Ajouter un médicament</string>
+    <string name="content_desc_more_options">Plus d’options</string>
+    <string name="content_desc_home">Aller à la liste des rayons</string>
+    <string name="content_desc_medicine">Aller à la liste des médicaments</string>
+
+    //AddAisleScreen
+    <string name="success_false_message">Erreur lors de l’ajout du rayon</string>
+    <string name="add_tittle">Ajouter un rayon</string>
+    <string name="add_tittle_medicine">Ajouter un médicament</string>
+    <string name="add_aisle">Entrez le nom du rayon</string>
+    <string name="validate">Valider</string>
+    <string name="try_again">Réessayer</string>
+    <string name="error">Erreur</string>
+    <string name="error_display">Une erreur est survenue,</string>
+    <string name="try_later">veuillez réessayer plus tard</string>
+    <string name="add_aisle_success">Rayon ajouté avec succès</string>
+
+    //AisleScreen
+    <string name="error_load_aisle">Erreur lors du chargement des rayons</string>
+    //Accessibility
+    <string name="name_of_aisle">Le nom du rayon est %1$s</string>
+
+    //AddMedicineScreen
+    <string name="name_medicine">Entrez le nom du médicament</string>
+    <string name="stock_medicine">Entrez la quantité du médicament</string>
+    <string name="aisle_medicine">Sélectionnez le rayon du médicament</string>
+    <string name="created_medicine">Médicament créé</string>
+    <string name="add_medicine_success">Médicament ajouté avec succès</string>
+
+    //MedicineScreen
+    <string name="no_results_found">Aucun résultat trouvé</string>
+    <string name="delete">Supprimer</string>
+    <string name="confirm_delete_title">Confirmer la suppression</string>
+    <string name="confirm_delete_message">Voulez-vous vraiment supprimer ce médicament ?</string>
+    <string name="error_delete_medicine">Échec de la suppression du médicament</string>
+    <string name="delete_medicine_success">Médicament supprimé avec succès</string>
+
+    //Accessibility
+    <string name="delete_medicine_description">Supprimer le médicament %1$s</string>
+    <string name="medicine_deleted_announcement">Le médicament %1$s a été supprimé</string>
+
+    //MedicineDetail
+    <string name="updated_medicine_details">Détails du médicament mis à jour :</string>
+    <string name="updated_medicine_details_with_stock">Stock mis à jour de %1$d à %2$d.</string>
+    <string name="update_failed">Erreur lors de la mise à jour du médicament</string>
+
+    //HistoryItem
+    <string name="invalid_date">Date invalide</string>
+    <string name="date">Date :</string>
+    <string name="user">Utilisateur :</string>
+    <string name="detail">Détails :</string>
+    <string name="history_announcement">Historique du médicament %1$s mis à jour par l’utilisateur %2$s le %3$s. Détails : %4$s</string>
+
+    //MedicineItem Accessibility
+    <string name="medicine_name_content_description">Nom du médicament : %1$s.</string>
+    <string name="medicine_stock_content_description">Le stock de %1$s est de %2$d</string>
+    <string name="click_for_details">cliquer pour voir les détails</string>
+
+    //MedicineDetailScreen Accessibility
+    <string name="minus_One">Moins un, cliquez pour diminuer le stock</string>
+    <string name="plus_one">Plus un, cliquez pour augmenter le stock</string>
+    <string name="stock_action">Le stock de %1$s est maintenant de %2$d</string>
+    <string name="medicine_aisle_content_description">Le rayon du médicament est : %1$s</string>
+
+    //Accessibility
+    <string name="back_button">Retour</string>
+</resources>

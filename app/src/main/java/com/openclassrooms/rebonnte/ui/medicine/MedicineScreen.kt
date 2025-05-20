@@ -49,7 +49,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MedicineScreen(viewModel: MedicineViewModel = viewModel()) {
+fun MedicineScreen(viewModel: MedicineViewModel = viewModel(),
+                   modifier: Modifier = Modifier) {
 
     val state by viewModel.uiState.collectAsState()
     val medicines = state.medicine
