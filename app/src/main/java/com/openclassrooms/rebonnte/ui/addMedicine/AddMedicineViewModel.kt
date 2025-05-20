@@ -3,7 +3,6 @@ package com.openclassrooms.rebonnte.ui.addMedicine
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.rebonnte.R
-import com.openclassrooms.rebonnte.domain.model.History
 import com.openclassrooms.rebonnte.domain.model.Medicine
 import com.openclassrooms.rebonnte.domain.model.User
 import com.openclassrooms.rebonnte.domain.useCases.aisle.container.AisleUseCases
@@ -13,9 +12,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for managing the state and logic related to adding medicines.
+ *
+ * It handles loading the current user, fetching all aisles,
+ * and adding a new medicine to the repository.
+ *
+ * @property medicineUseCase Use cases related to medicine operations.
+ * @property userUseCases Use cases related to user operations.
+ * @property aisleUseCases Use cases related to aisle operations.
+ */
 @HiltViewModel
 class AddMedicineViewModel @Inject constructor(
     private val medicineUseCase: MedicineUseCases,
@@ -30,6 +38,14 @@ class AddMedicineViewModel @Inject constructor(
         loadAllAisle()
     }
 
+    /**
+     * Adds a new medicine using the provided medicine data.
+     *
+     * Updates the UI state to reflect loading status,
+     * success or failure messages.
+     *
+     * @param medicine The medicine to add. If null, no operation is performed.
+     */
     fun addMedicine(medicine: Medicine?) {
         viewModelScope.launch {
 
@@ -55,6 +71,11 @@ class AddMedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Loads the currently authenticated user.
+     *
+     * Updates the UI state with user data or error status.
+     */
     private fun loadUser() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
@@ -75,6 +96,11 @@ class AddMedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Loads the list of all aisles.
+     *
+     * Collects aisles from the use case flow and updates the UI state accordingly.
+     */
     private fun loadAllAisle() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -96,14 +122,14 @@ class AddMedicineViewModel @Inject constructor(
     }
 
 
-/**
- * Resets the success or failure message in the UI state.
- *
- * This function is useful to clear any displayed message after it has been shown to the user.
- */
-fun resetMessage() {
-    _uiState.value = _uiState.value.copy(error = null, successMessage = null)
-}
+    /**
+     * Resets the success or failure message in the UI state.
+     *
+     * This function is useful to clear any displayed message after it has been shown to the user.
+     */
+    fun resetMessage() {
+        _uiState.value = _uiState.value.copy(error = null, successMessage = null)
+    }
 
 }
 

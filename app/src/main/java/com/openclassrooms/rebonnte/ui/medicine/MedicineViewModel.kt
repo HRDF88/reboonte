@@ -19,6 +19,15 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for managing UI state related to medicines.
+ *
+ * Handles loading, filtering, sorting, updating stock, and deleting medicines,
+ * as well as managing the current logged-in user state.
+ *
+ * @property medicineUseCase Use cases related to medicine operations.
+ * @property userUseCases Use cases related to user operations.
+ */
 @HiltViewModel
 class MedicineViewModel @Inject constructor(
     private val medicineUseCase: MedicineUseCases,
@@ -35,6 +44,9 @@ class MedicineViewModel @Inject constructor(
         loadUser()
     }
 
+    /**
+     * Loads all medicines and updates the UI state accordingly.
+     */
     fun loadAllMedicine() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -55,6 +67,11 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Filters medicines by their name matching the given search string.
+     *
+     * @param search The search query string.
+     */
     fun filterByName(search: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -75,6 +92,9 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Sorts the list of medicines by their name.
+     */
     fun sortByName() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -95,6 +115,9 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Sorts the list of medicines by their stock quantity.
+     */
     fun sortByStock() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -115,6 +138,9 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Loads the current logged-in user and updates the UI state.
+     */
     private fun loadUser() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
@@ -135,6 +161,14 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Updates the stock of a given medicine and logs the change in its history.
+     *
+     * @param medicine The medicine to update.
+     * @param newStock The new stock value.
+     * @param userId The ID of the user who made the change.
+     * @param details Details describing the stock update.
+     */
     private fun updateMedicineStock(
         medicine: Medicine,
         newStock: Int,
@@ -180,6 +214,13 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Increments the stock of a medicine by one.
+     *
+     * @param medicine The medicine to update.
+     * @param userId The ID of the user performing the update.
+     * @param detail Details describing the stock increment.
+     */
     fun incrementStock(medicine: Medicine, userId: String?, detail: String) {
 
         val newStock = medicine.stock + 1
@@ -188,6 +229,13 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Decrements the stock of a medicine by one, preventing negative stock.
+     *
+     * @param medicine The medicine to update.
+     * @param userId The ID of the user performing the update.
+     * @param detail Details describing the stock decrement.
+     */
     fun decrementStock(
         medicine: Medicine,
         userId: String?,
@@ -201,6 +249,12 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Logs out the current user, clears the user state,
+     * and restarts the app's main activity.
+     *
+     * @param context The context used to start the main activity.
+     */
     fun logOut(context: Context) {
         viewModelScope.launch {
             userUseCases.signOut()
@@ -212,6 +266,11 @@ class MedicineViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Deletes a medicine by its name and updates the UI state accordingly.
+     *
+     * @param nameMedicine The name of the medicine to delete.
+     */
     suspend fun deleteMedicine(nameMedicine: String) {
         try {
             viewModelScope.launch {
@@ -232,7 +291,9 @@ class MedicineViewModel @Inject constructor(
     private val _user = MutableStateFlow<User?>(userUseCases.getCurrentUser())
     val user: StateFlow<User?> = _user.asStateFlow()
 
-
+    /**
+     * Resets error and success messages in the UI state.
+     */
     fun resetMessage() {
         _uiState.value = _uiState.value.copy(error = null)
     }

@@ -12,12 +12,24 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+/**
+ * Implementation of [MedicineApi] that interacts with Firebase Firestore
+ * to perform CRUD operations on the "Medicines" collection.
+ *
+ * @property firestore The FirebaseFirestore instance used to access Firestore.
+ */
 class CollectionMedicineFirebaseAPI @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : MedicineApi {
 
     private val medicineCollection = firestore.collection("Medicines")
 
+    /**
+     * Adds a new medicine document to the "Medicines" Firestore collection.
+     *
+     * @param medicine The medicine object to add.
+     * @return A [Result] indicating success or failure of the operation.
+     */
     override suspend fun addMedicine(medicine: Medicine): Result<Unit> = try {
         medicineCollection
             .add(medicine.toFirestoreMap())
@@ -27,6 +39,12 @@ class CollectionMedicineFirebaseAPI @Inject constructor(
         Result.failure(e)
     }
 
+    /**
+     * Returns a [Flow] emitting the list of all medicines in real-time.
+     * Emits updates whenever the "Medicines" collection changes.
+     *
+     * @return A flow emitting lists of [Medicine].
+     */
     override fun getAllMedicines(): Flow<List<Medicine>> = callbackFlow {
         val registration = medicineCollection.addSnapshotListener { snapshot, error ->
             if (error != null) {
@@ -42,6 +60,11 @@ class CollectionMedicineFirebaseAPI @Inject constructor(
         awaitClose { registration.remove() }
     }
 
+    /**
+     * Returns a [Flow] emitting the list of all medicines sorted by their "name" field.
+     *
+     * @return A flow emitting lists of [Medicine] sorted by name.
+     */
     override fun getAllMedicinesSortedByName(): Flow<List<Medicine>> = callbackFlow {
         val registration = medicineCollection
             .orderBy("name")
@@ -59,6 +82,11 @@ class CollectionMedicineFirebaseAPI @Inject constructor(
         awaitClose { registration.remove() }
     }
 
+    /**
+     * Returns a [Flow] emitting the list of all medicines sorted by their "stock" field.
+     *
+     * @return A flow emitting lists of [Medicine] sorted by stock.
+     */
     override fun getAllMedicinesSortedByStock(): Flow<List<Medicine>> = callbackFlow {
         val registration = medicineCollection
             .orderBy("stock")
@@ -76,6 +104,11 @@ class CollectionMedicineFirebaseAPI @Inject constructor(
         awaitClose { registration.remove() }
     }
 
+    /**
+     * Returns a [Flow] emitting the list of all medicines sorted by their "name" field.
+     *
+     * @return A flow emitting lists of [Medicine] sorted by name.
+     */
     override fun searchMedicinesByName(query: String): Flow<List<Medicine>> = callbackFlow {
         val lowercaseQuery = query.lowercase()
         val end = lowercaseQuery + '\uf8ff'
@@ -98,6 +131,12 @@ class CollectionMedicineFirebaseAPI @Inject constructor(
         awaitClose { registration.remove() }
     }
 
+    /**
+     * Updates existing medicines with the same name by merging the provided medicine data.
+     *
+     * @param medicine The medicine object with updated data.
+     * @return A [Result] indicating success or failure of the operation.
+     */
     override suspend fun updateMedicine(medicine: Medicine): Result<Unit> = try {
         val snap = medicineCollection
             .whereEqualTo("name", medicine.name)
@@ -114,6 +153,12 @@ class CollectionMedicineFirebaseAPI @Inject constructor(
         Result.failure(e)
     }
 
+    /**
+     * Deletes all medicines from the "Medicines" collection that match the given name.
+     *
+     * @param name The name of the medicine(s) to delete.
+     * @return A [Result] indicating success or failure of the operation.
+     */
     override suspend fun deleteMedicineByName(name: String): Result<Unit> = try {
         val snap = medicineCollection
             .whereEqualTo("name", name)

@@ -10,6 +10,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for managing the UI state of aisles.
+ *
+ * It handles loading all aisles and exposing the current UI state via a [StateFlow].
+ *
+ * @property aisleUseCases Use cases for aisle-related operations.
+ */
 @HiltViewModel
 class AisleViewModel @Inject constructor(private val aisleUseCases: AisleUseCases) : ViewModel() {
     private val _uiState = MutableStateFlow(AisleUiState())
@@ -19,6 +26,13 @@ class AisleViewModel @Inject constructor(private val aisleUseCases: AisleUseCase
         loadAllAisle()
     }
 
+    /**
+     * Loads all aisles and updates the UI state accordingly.
+     *
+     * Sets [AisleUiState.isLoading] to true at the start, then collects the aisles list.
+     * On success, updates the aisles list and clears loading and error states.
+     * On failure, sets an error message resource ID.
+     */
     fun loadAllAisle() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)

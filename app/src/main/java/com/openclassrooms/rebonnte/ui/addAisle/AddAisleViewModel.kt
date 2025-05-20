@@ -11,6 +11,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for handling the logic of adding an [Aisle].
+ * Uses [AisleUseCases] to perform domain operations.
+ */
 @HiltViewModel
 class AddAisleViewModel @Inject constructor(private val aisleUseCase: AisleUseCases) :
     ViewModel() {
@@ -18,7 +22,12 @@ class AddAisleViewModel @Inject constructor(private val aisleUseCase: AisleUseCa
     private val _uiState = MutableStateFlow(AddAisleUiState())
     val uiState: StateFlow<AddAisleUiState> = _uiState
 
-
+    /**
+     * Attempts to add the given [aisle].
+     * Updates the UI state accordingly to represent loading, success, or error.
+     *
+     * @param aisle The [Aisle] to add; if null, the operation is skipped.
+     */
     fun addAisle(aisle: Aisle?) {
         viewModelScope.launch {
 

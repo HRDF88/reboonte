@@ -5,6 +5,13 @@ import com.openclassrooms.rebonnte.domain.useCases.aisle.useCase.DeleteAisleByNa
 import com.openclassrooms.rebonnte.domain.useCases.aisle.useCase.GetAllAislesUseCase
 import javax.inject.Inject
 
+/**
+ * Aggregates the use cases related to aisle management.
+ *
+ * @property addAisleUseCase Use case for adding a new aisle.
+ * @property deleteAisleByNameUseCase Use case for deleting an aisle by its name.
+ * @property getAllAislesUseCase Use case for retrieving all aisles.
+ */
 data class AisleUseCases @Inject constructor(
     val addAisleUseCase: AddAisleUseCase,
     val deleteAisleByNameUseCase: DeleteAisleByNameUseCase,
