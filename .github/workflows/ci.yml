@@ -52,6 +52,14 @@ jobs:
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
 
+         # Step 7: Upload unit test reports
+      - name: Upload unit test reports
+        if: always() # Always run, even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: app/build/reports/tests/testReleaseUnitTest/
+
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -101,27 +109,23 @@ jobs:
             sleep 10
             ./gradlew connectedDebugAndroidTest
 
-      - name: Generate merged JaCoCo report
-        run: ./gradlew mergedJacocoReport
-
+      # Step 10: Upload instrumented test reports
       - name: Upload instrumented test reports
-        if: always()
+        if: always() # Always run, even if tests fail
         uses: actions/upload-artifact@v4
         with:
           name: instrumented-test-reports
           path: app/build/reports/androidTests/connected/debug/
 
-      - name: Upload merged JaCoCo report (HTML)
-        uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-html
-          path: app/build/reports/jacoco/mergedJacocoReport/html
+      - name: Generate merged JaCoCo report
+        run: ./gradlew mergedJacocoReport
 
-      - name: Upload merged JaCoCo report (XML)
+     # Step 11: Upload JaCoCo code coverage report
+      - name: Upload JaCoCo report - Code coverage
         uses: actions/upload-artifact@v4
         with:
-          name: jacoco-xml
-          path: app/build/reports/jacoco/mergedJacocoReport/mergedJacocoReport.xml
+          name: jacoco-report
+          path: app/build/reports/coverage/androidTest/debug/connected/report.xml
 
       - name: SonarCloud Analysis
         env:
