@@ -58,27 +58,40 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      # Ajout : Diagnostic du dossier AVD
+      - name: Debug AVD directory
+        run: |
+          mkdir -p ~/.android/avd
+          ls -la ~/.android/avd || true
+
+      # Ajout : Suppression de l'AVD s'il existe déjà
+      - name: Delete existing AVD if any
+        run: |
+          avd_path="$HOME/.android/avd/test.avd"
+          if [ -d "$avd_path" ]; then
+            echo "Deleting existing AVD at $avd_path"
+            rm -rf "$avd_path"
+          fi
+
       - name: Run instrumented tests
         uses: ReactiveCircus/android-emulator-runner@v2.32.0
         with:
-         api-level: 33
-         target: google_apis
-         arch: x86_64
-         avd-name: test
-         force-avd-creation: true
-         emulator-boot-timeout: 300
-         disable-animations: true
-         enable-hw-keyboard: false
-         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-         disable-spellchecker: false
-         disable-linux-hw-accel: auto
-         channel: stable
-         script: |
-          adb wait-for-device
-          adb shell input keyevent 82
-          ./gradlew connectedDebugAndroidTest
-
-
+          api-level: 33
+          target: google_apis
+          arch: x86_64
+          avd-name: test
+          force-avd-creation: true
+          emulator-boot-timeout: 300
+          disable-animations: true
+          enable-hw-keyboard: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          disable-spellchecker: false
+          disable-linux-hw-accel: auto
+          channel: stable
+          script: |
+            adb wait-for-device
+            adb shell input keyevent 82
+            ./gradlew connectedDebugAndroidTest
 
       - name: Generate merged JaCoCo report
         run: ./gradlew mergedJacocoReport
