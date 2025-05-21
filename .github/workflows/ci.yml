@@ -58,17 +58,23 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Android Emulator Runner and launch instrumented tests
+      - name: Run instrumented tests
         uses: ReactiveCircus/android-emulator-runner@v2.32.0
         with:
          api-level: 33
          target: google_apis
          arch: x86_64
-         hw-profile: pixel_5
+         avd-name: test
+         force-avd-creation: true
          emulator-boot-timeout: 300
          disable-animations: true
          enable-hw-keyboard: false
-         script: ./gradlew connectedDebugAndroidTest
+         emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+         script: |
+          adb wait-for-device
+          adb shell input keyevent 82
+          ./gradlew connectedDebugAndroidTest
+
 
       - name: Generate merged JaCoCo report
         run: ./gradlew mergedJacocoReport
