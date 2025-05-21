@@ -63,6 +63,7 @@ jobs:
         with:
           api-level: 33
           arch: x86_64
+          target: google_apis
           emulator-boot-timeout: 300
           disable-animations: true
           enable-hw-keyboard: false
