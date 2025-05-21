@@ -72,6 +72,13 @@ jobs:
             echo "Deleting existing AVD at $avd_path"
             rm -rf "$avd_path"
           fi
+      - name: Cache AVD
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.android/avd
+            ~/.android/adb*
+          key: ${{ runner.os }}-avd-cache
 
       - name: Run instrumented tests
         uses: ReactiveCircus/android-emulator-runner@v2.32.0
@@ -91,6 +98,7 @@ jobs:
           script: |
             adb wait-for-device
             adb shell input keyevent 82
+            sleep 10
             ./gradlew connectedDebugAndroidTest
 
       - name: Generate merged JaCoCo report
