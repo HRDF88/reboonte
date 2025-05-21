@@ -64,7 +64,7 @@ class AddMedicineViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = R.string.success_false_message
+                    error = R.string.error_add_medicine
                 )
             }
 
@@ -90,7 +90,7 @@ class AddMedicineViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = R.string.success_false_message
+                    error = R.string.error_load_user
                 )
             }
         }

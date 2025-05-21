@@ -46,6 +46,8 @@
     <string name="aisle_medicine">Sélectionnez le rayon du médicament</string>
     <string name="created_medicine">Médicament créé</string>
     <string name="add_medicine_success">Médicament ajouté avec succès</string>
+    <string name="error_add_medicine">Erreur lors de l’ajout du médicament</string>
+    <string name="error_load_user">Erreur de chargement de l\'utilisateur</string>
 
     //MedicineScreen
     <string name="no_results_found">Aucun résultat trouvé</string>
@@ -54,6 +56,10 @@
     <string name="confirm_delete_message">Voulez-vous vraiment supprimer ce médicament ?</string>
     <string name="error_delete_medicine">Échec de la suppression du médicament</string>
     <string name="delete_medicine_success">Médicament supprimé avec succès</string>
+    <string name="error_load_all_medicine">Erreur du chargement des médicaments</string>
+    <string name="error_load_medicine_by_name">Erreur du chargement des médicaments triés par nom.</string>
+    <string name="error_load_medicine_by_stock">Erreur du chargement des médicaments triés par stock.</string>
+    <string name="error_load_medicine_by_search">Erreur lors de la recherche des médicaments.</string>
 
     //Accessibility
     <string name="delete_medicine_description">Supprimer le médicament %1$s</string>

@@ -61,7 +61,7 @@ class MedicineViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = R.string.error_load_aisle
+                    error = R.string.error_load_all_medicine
                 )
             }
         }
@@ -86,7 +86,7 @@ class MedicineViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = R.string.error_load_aisle
+                    error = R.string.error_load_medicine_by_search
                 )
             }
         }
@@ -109,7 +109,7 @@ class MedicineViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = R.string.error_load_aisle
+                    error = R.string.error_load_medicine_by_name
                 )
             }
         }
@@ -132,7 +132,7 @@ class MedicineViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = R.string.error_load_aisle
+                    error = R.string.error_load_medicine_by_stock
                 )
             }
         }
@@ -155,7 +155,7 @@ class MedicineViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = R.string.success_false_message
+                    error = R.string.error_load_user
                 )
             }
         }

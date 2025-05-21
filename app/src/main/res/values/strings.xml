@@ -45,6 +45,8 @@
     <string name="aisle_medicine">Select the aisle of the medicine</string>
     <string name="created_medicine">Medicine created</string>
     <string name="add_medicine_success">Medicine add successfully</string>
+    <string name="error_add_medicine">Error to add medicine</string>
+    <string name="error_load_user">Error to load user</string>
 
     //MedicineScreen
     <string name="no_results_found">No results found</string>
@@ -53,6 +55,11 @@
     <string name="confirm_delete_message">Are you sure you want to delete this medicine?</string>
     <string name="error_delete_medicine">Failed to delete medicine</string>
     <string name="delete_medicine_success">Medicine deleted successfully</string>
+    <string name="error_load_all_medicine">Error to load all medicines</string>
+    <string name="error_load_medicine_by_name">Error to load medicine by name</string>
+    <string name="error_load_medicine_by_stock">Error to load medicine by stock</string>
+    <string name="error_load_medicine_by_search">Error medicine search result</string>
+
     //Accessibility
     <string name="delete_medicine_description">Delete medicine %1$s</string>
     <string name="medicine_deleted_announcement">Medicine %1$s has been deleted</string>
