@@ -12,6 +12,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.rebonnte.R
@@ -36,7 +37,8 @@ fun AddAisleForm(
             onValueChange = { newText ->
                 onNameChange(TextUtils.formatAisleName(newText))
             },
-            label = { Text(stringResource(R.string.add_aisle)) }
+            label = { Text(stringResource(R.string.add_aisle)) },
+            modifier = Modifier.testTag("AisleNameInput"),
         )
 
         Spacer(modifier = Modifier.height(8.dp))

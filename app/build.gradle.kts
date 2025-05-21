@@ -1,3 +1,5 @@
+import com.android.build.gradle.BaseExtension
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -9,9 +11,19 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
 }
 
+sonarqube {
+    properties {
+        property("sonar.organization", "Julien_Seguin") // organisation SonarCloud
+        property("sonar.projectKey", "HRDF88_reboonte")    // identifiant de projet SonarCloud
+        property("sonar.projectName", "reboonte") // Nom de  projet SonarCloud
+        property("sonar.host.url", "https://sonarcloud.io") // URL de SonarCloud
+        property("sonar.login", project.findProperty("sonar.token") ?: "") // Token généré dans SonarCloud
+        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile}/reports/jacoco/testDebugUnitTest/jacocoTestReport.html")
+    }
+}
 android {
     namespace = "com.openclassrooms.rebonnte"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.openclassrooms.rebonnte"
@@ -50,36 +62,79 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/*.kotlin_module"
         }
     }
+}
+val androidExtension = extensions.getByType<BaseExtension>()
+
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/testDebugUnitTest/html"))
+
+    }
+
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "android/**/*.*"
+    )
+
+    val debugTree = fileTree("${buildDir}/intermediates/javac/debug") {
+        exclude(fileFilter)
+    }
+
+    val kotlinDebugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+
+    classDirectories.setFrom(files(debugTree, kotlinDebugTree))
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+    executionData.setFrom(fileTree(buildDir).include(
+        "jacoco/testDebugUnitTest.exec",
+        "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"
+    ))
 }
 
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
     implementation(libs.androidx.activity.compose)
+
+    // Compose BOM - gère les versions Compose automatiquement
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.compose)
+    implementation("androidx.navigation:navigation-compose:2.9.0")
     implementation(libs.androidx.room.runtime.android)
+    implementation(libs.androidx.navigation.testing.android)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.compose.ui:ui:1.5.4")
-    implementation("androidx.compose.ui:ui:1.5.4")
-    implementation("androidx.compose.material:material:1.5.4")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.5.4")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.4")
 
     //Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
@@ -99,6 +154,26 @@ dependencies {
 
     // Firebase UI Auth
     implementation("com.firebaseui:firebase-ui-auth:9.0.0")
+
+    // Tests
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation(kotlin("test"))
+    androidTestImplementation("org.mockito:mockito-android:5.2.0")
+    testImplementation("io.mockk:mockk-android:1.13.7")
+    androidTestImplementation("io.mockk:mockk-android:1.13.7")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    testImplementation("com.google.truth:truth:1.4.0")
+    testImplementation("app.cash.turbine:turbine:1.1.0")
+    androidTestImplementation("androidx.navigation:navigation-testing-android:2.9.0")
+
+
 
 
 }

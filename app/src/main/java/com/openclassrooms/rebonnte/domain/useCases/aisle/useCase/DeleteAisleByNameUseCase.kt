@@ -18,6 +18,6 @@ class DeleteAisleByNameUseCase @Inject constructor(
      * @param name The name of the aisle to delete.
      * @return A [Result] indicating success or failure of the operation.
      */
-    suspend operator fun invoke(name: String): Result<Unit> =
+    open suspend operator fun invoke(name: String): Result<Unit> =
         repository.deleteAisleByName(name)
 }

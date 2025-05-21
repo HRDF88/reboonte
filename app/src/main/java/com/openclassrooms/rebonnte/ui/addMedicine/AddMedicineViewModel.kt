@@ -25,13 +25,13 @@ import javax.inject.Inject
  * @property aisleUseCases Use cases related to aisle operations.
  */
 @HiltViewModel
-class AddMedicineViewModel @Inject constructor(
+open class AddMedicineViewModel @Inject constructor(
     private val medicineUseCase: MedicineUseCases,
     private val userUseCases: UserUseCases,
     private val aisleUseCases: AisleUseCases
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AddMedicineUiState())
-    val uiState: StateFlow<AddMedicineUiState> = _uiState
+    open val uiState: StateFlow<AddMedicineUiState> = _uiState
 
     init {
         loadUser()
@@ -127,7 +127,7 @@ class AddMedicineViewModel @Inject constructor(
      *
      * This function is useful to clear any displayed message after it has been shown to the user.
      */
-    fun resetMessage() {
+    open fun resetMessage() {
         _uiState.value = _uiState.value.copy(error = null, successMessage = null)
     }
 

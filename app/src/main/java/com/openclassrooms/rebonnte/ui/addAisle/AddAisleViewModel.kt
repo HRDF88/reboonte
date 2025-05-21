@@ -16,11 +16,11 @@ import javax.inject.Inject
  * Uses [AisleUseCases] to perform domain operations.
  */
 @HiltViewModel
-class AddAisleViewModel @Inject constructor(private val aisleUseCase: AisleUseCases) :
+open class AddAisleViewModel @Inject constructor(private val aisleUseCase: AisleUseCases) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(AddAisleUiState())
-    val uiState: StateFlow<AddAisleUiState> = _uiState
+    open val uiState: StateFlow<AddAisleUiState> = _uiState
 
     /**
      * Attempts to add the given [aisle].

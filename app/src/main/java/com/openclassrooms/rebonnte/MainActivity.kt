@@ -137,7 +137,7 @@ fun SetupNavGraph(
         modifier = modifier
     ) {
         composable("aisle") { AisleScreen(aisleViewModel) }
-        composable("medicine") { MedicineScreen(medicineViewModel, modifier = modifier) }
+        composable("medicine") { MedicineScreen(medicineViewModel) }
         composable("addAisle") {
             AddAisleScreen(
                 navController = navController,

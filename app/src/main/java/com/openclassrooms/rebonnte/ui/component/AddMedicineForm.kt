@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.rebonnte.R
@@ -59,6 +60,7 @@ fun AddMedicineForm(
                 onNameChange(TextUtils.formatMedicineName(newText))
             },
             label = { Text(stringResource(R.string.name_medicine)) },
+            modifier = Modifier.testTag("MedicineNameInput"),
             enabled = enabled,
             singleLine = true
         )
@@ -70,6 +72,7 @@ fun AddMedicineForm(
                 .background(MaterialTheme.colorScheme.surface)
                 .clickable { isDropdownExpanded = !isDropdownExpanded }
                 .padding(16.dp)
+                .testTag("AisleDropdownTrigger")
         ) {
             Text(
                 text = if (selectedAisles.isEmpty()) stringResource(R.string.aisle_medicine)
@@ -84,6 +87,7 @@ fun AddMedicineForm(
         ) {
             aisleList.forEach { aisle ->
                 DropdownMenuItem(
+                    modifier = Modifier.testTag("AisleItem_${aisle.name}"),
                     text = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -115,7 +119,8 @@ fun AddMedicineForm(
 
         Button(
             onClick = onClick,
-            enabled = enabled && name.isNotBlank() && selectedAisles.isNotEmpty()
+            enabled = enabled && name.isNotBlank() && selectedAisles.isNotEmpty(),
+            modifier = Modifier.testTag("ValidateButton")
 
 
         ) { Text(text = stringResource(R.string.validate)) }

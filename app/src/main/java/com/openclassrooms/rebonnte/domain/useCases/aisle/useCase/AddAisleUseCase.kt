@@ -19,6 +19,6 @@ class AddAisleUseCase @Inject constructor(
      * @param aisle The [Aisle] to add.
      * @return A [Result] indicating success or failure of the operation.
      */
-    suspend operator fun invoke(aisle: Aisle): Result<Unit> =
+    open suspend operator fun invoke(aisle: Aisle): Result<Unit> =
         repository.addAisle(aisle)
 }

@@ -19,6 +19,6 @@ class GetAllAislesUseCase @Inject constructor(
      *
      * @return A [Flow] emitting a list of [Aisle] objects.
      */
-    operator fun invoke(): Flow<List<Aisle>> =
+    open operator fun invoke(): Flow<List<Aisle>> =
         repository.getAllAisles()
 }
