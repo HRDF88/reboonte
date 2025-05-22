@@ -27,8 +27,14 @@ sonarqube {
         property("sonar.projectKey", "HRDF88_reboonte")    // identifiant de projet SonarCloud
         property("sonar.projectName", "reboonte") // Nom de  projet SonarCloud
         property("sonar.host.url", "https://sonarcloud.io") // URL de SonarCloud
-        property("sonar.login", project.findProperty("sonar.token") ?: "") // Token généré dans SonarCloud
-        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile}/reports/jacoco/testDebugUnitTest/jacocoTestReport.html")
+        property(
+            "sonar.login",
+            project.findProperty("sonar.token") ?: ""
+        ) // Token généré dans SonarCloud
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "${layout.buildDirectory.get().asFile}/reports/jacoco/testDebugUnitTest/jacocoTestReport.html"
+        )
     }
 }
 android {
@@ -73,6 +79,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -131,13 +138,15 @@ tasks.register<JacocoReport>("jacocoTestReport") {
 
     classDirectories.setFrom(files(debugTree, kotlinDebugTree))
     sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
-    executionData.setFrom(fileTree(buildDir).include(
-        "jacoco/testDebugUnitTest.exec",
-        "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"
-    ))
+    executionData.setFrom(
+        fileTree(buildDir).include(
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"
+        )
+    )
 }
 tasks.register<JacocoReport>("mergedJacocoReport") {
-    
+
 
     group = "verification"
     description = "Generate merged JaCoCo coverage report from unit and instrumentation tests"
@@ -168,12 +177,14 @@ tasks.register<JacocoReport>("mergedJacocoReport") {
     classDirectories.setFrom(files(debugTree, kotlinDebugTree))
     sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
 
-    executionData.setFrom(files(
-        "${buildDir}/jacoco/testDebugUnitTest.exec",
-        "${buildDir}/outputs/code_coverage/connected/*coverage.ec",
-        "${buildDir}/outputs/code_coverage/connected/debugAndroidTest/connected/*.ec"
+    executionData.setFrom(
+        files(
+            "${buildDir}/jacoco/testDebugUnitTest.exec",
+            "${buildDir}/outputs/code_coverage/connected/*coverage.ec",
+            "${buildDir}/outputs/code_coverage/connected/debugAndroidTest/connected/*.ec"
 
-    ))
+        )
+    )
 }
 
 dependencies {
@@ -208,7 +219,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1")
-    androidTestImplementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    androidTestImplementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     kapt("com.google.dagger:hilt-compiler:2.51.1")
 
     // Firebase (BoM centralise les versions)
@@ -239,8 +250,6 @@ dependencies {
     testImplementation("com.google.truth:truth:1.4.0")
     testImplementation("app.cash.turbine:turbine:1.1.0")
     androidTestImplementation("androidx.navigation:navigation-testing-android:2.9.0")
-
-
 
 
 }
