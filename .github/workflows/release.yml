@@ -11,18 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout du code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Configuration de JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'adopt'
 
-  # Décryptage du keystore
       - name: Decode release_key2.jks
         run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > app/release_key2.jks
@@ -32,17 +29,14 @@ jobs:
           echo "🔍 File details:"
           file app/release_key2.jks
           stat app/release_key2.jks
-      
 
-      # Donner les droits à gradlew
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      #Création du fichier google-services.json à partir du secret encodé en base64
       - name: Decode google-services.json
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-      # Création du fichier keystore.properties
+
       - name: Create keystore.properties
         run: |
           cat <<EOF > keystore.properties
@@ -51,35 +45,34 @@ jobs:
           keyAlias=${{ secrets.KEY_ALIAS }}
           keyPassword=${{ secrets.KEY_PASSWORD }}
           EOF
-     # Compilation de l'APK avec signature
+
       - name: Build APK
         run: ./gradlew assembleRelease
 
-      # Vérification que le JSON est bien formaté
       - name: Check if service account JSON is valid
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' | jq . >/dev/null || echo "Invalid JSON"
-      # Vérification que l'appId est bien défini
+
       - name: Check if Firebase appId is defined
         run: |
-         if [ -z "${{ secrets.FIREBASE_APP_ID }}" ]; then
-         echo "FIREBASE_APP_ID is not set" && exit 1
-         fi
-         echo "FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}"
-      # Vérification de l'existence du fichier APK
+          if [ -z "${{ secrets.FIREBASE_APP_ID }}" ]; then
+            echo "FIREBASE_APP_ID is not set" && exit 1
+          fi
+          echo "FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}"
+
       - name: Check if APK exists
         run: |
-         if [ ! -f "app/build/outputs/apk/release/app-release.apk" ]; then
-         echo "APK not found, please check your build process" && exit 1
-         fi
-         echo "APK found: app/build/outputs/apk/release/app-release.apk"
-      # Déploiement sur Firebase App Distribution
+          if [ ! -f "app/build/outputs/apk/release/app-release.apk" ]; then
+            echo "APK not found, please check your build process" && exit 1
+          fi
+          echo "APK found: app/build/outputs/apk/release/app-release.apk"
+
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}   # Firebase Application ID
-          groups: testers                         # Firebase group defined for testers
-          file: app/build/outputs/apk/release/app-release.apk  # Path to the generated APK
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}  # Firebase service account JSON key
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          groups: testers
+          file: app/build/outputs/apk/release/app-release.apk
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         env:
-          ACTIONS_STEP_DEBUG: true # Enable step debug output for troubleshooting
+          ACTIONS_STEP_DEBUG: true
