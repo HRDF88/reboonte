@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -9,6 +10,15 @@ plugins {
     kotlin("kapt")
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
+}
+
+//Charge la clé release
+val keystoreProperties = Properties()
+val keystoreFile = rootProject.file("keystore.properties")
+if (keystoreFile.exists()) {
+    keystoreFile.inputStream().use {
+        keystoreProperties.load(it)
+    }
 }
 
 sonarqube {
@@ -35,6 +45,24 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            val storeFilePath = keystoreProperties["storeFile"] as String?
+            val storePasswordProp = keystoreProperties["storePassword"] as String?
+            val keyAliasProp = keystoreProperties["keyAlias"] as String?
+            val keyPasswordProp = keystoreProperties["keyPassword"] as String?
+
+            if (storeFilePath != null && storePasswordProp != null && keyAliasProp != null && keyPasswordProp != null) {
+                storeFile = File(rootProject.projectDir, storeFilePath)
+                storePassword = storePasswordProp
+                keyAlias = keyAliasProp
+                keyPassword = keyPasswordProp
+            } else {
+                logger.warn("Keystore information is missing, signing config 'release' will not be properly set.")
+            }
         }
     }
 
