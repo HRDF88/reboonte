@@ -1,9 +1,10 @@
 name: CI/CD - Android Release
 
+# Controls when the workflow will run
 on:
   push:
     tags:
-      - 'v*'  # Déclenche l'action sur les tags qui commencent par 'v' (ex : v1.0.0)
+      - 'v*'  # Trigger workflow on tags starting with 'v' (e.g. v1.0.0)
   workflow_dispatch:
 jobs:
   build:
@@ -11,32 +12,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Setup Java Development Kit version 17 using AdoptOpenJDK distribution
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'adopt'
 
+      # Decode the base64 encoded keystore from secrets and save it to the app directory
       - name: Decode release_key2.jks
         run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > app/release_key2.jks
           echo "Keystore has been decoded and saved to: $(pwd)/app/release_key2.jks"
           echo "Contents of app/ directory:"
           ls -l app/
-          echo "🔍 File details:"
+          echo "File details:"
           file app/release_key2.jks
           stat app/release_key2.jks
 
+      # Make the Gradle wrapper executable
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      # Decode the base64 encoded google-services.json from secrets to app directory
       - name: Decode google-services.json
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
+      # Create keystore.properties file with keystore credentials from secrets
       - name: Create keystore.properties
         run: |
           cat <<EOF > keystore.properties
@@ -46,16 +53,20 @@ jobs:
           keyPassword=${{ secrets.KEY_PASSWORD }}
           EOF
 
+      # Build the release APK
       - name: Build APK
         run: ./gradlew assembleRelease
 
+      # List all APK files generated (for debugging purposes)
       - name: List APK files
         run: find . -name "*.apk"
 
+      # Validate that the Firebase service account JSON secret is valid JSON
       - name: Check if service account JSON is valid
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' | jq . >/dev/null || echo "Invalid JSON"
 
+      # Check if Firebase App ID secret is set and non-empty
       - name: Check if Firebase appId is defined
         run: |
           if [ -z "${{ secrets.FIREBASE_APP_ID }}" ]; then
@@ -63,6 +74,7 @@ jobs:
           fi
           echo "FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}"
 
+      # Verify that the APK file exists after build
       - name: Check if APK exists
         run: |
           if [ ! -f "app/build/outputs/apk/release/app-release.apk" ]; then
@@ -70,6 +82,7 @@ jobs:
           fi
           echo "APK found: app/build/outputs/apk/release/app-release.apk"
 
+      # Upload the APK to Firebase App Distribution for the testers group
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
