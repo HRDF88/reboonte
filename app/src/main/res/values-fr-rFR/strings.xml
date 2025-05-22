@@ -88,6 +88,9 @@
     <string name="stock_action">Le stock de %1$s est maintenant de %2$d</string>
     <string name="medicine_aisle_content_description">Le rayon du médicament est : %1$s</string>
 
+    //AisleDetailScreen
+    <string name="no_medicine_in_aisle">Aucun médicament trouvé dans cette allée.</string>
+
     //Accessibility
     <string name="back_button">Retour</string>
 </resources>

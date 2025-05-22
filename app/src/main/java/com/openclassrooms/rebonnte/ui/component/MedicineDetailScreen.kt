@@ -42,7 +42,10 @@ import com.openclassrooms.rebonnte.utils.accessibility.AccessibilityTalkBackEnab
 fun MedicineDetailScreen(name: String, viewModel: MedicineViewModel) {
     val state by viewModel.uiState.collectAsState()
     val medicines = state.medicine
-    val medicine = medicines.find { it.name == name } ?: return
+    val medicine = medicines.find { it.name == name } ?: run {
+        ErrorComposable { viewModel.loadAllMedicine() }
+        return
+    }
     val userId = state.user?.email ?: "unknown"
     val context = LocalContext.current
     val activity = context as? Activity

@@ -88,6 +88,8 @@
     <string name="stock_action">now the stock of %1$s is %2$d</string>
     <string name="medicine_aisle_content_description">Aisle of medicine is : %1$s</string>
 
+    //AisleDetailScreen
+    <string name="no_medicine_in_aisle">No medicine found in this aisle.</string>
 
     //Accessibility
     <string name="back_button">Back</string>
