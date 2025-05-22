@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'v*'  # Déclenche l'action sur les tags qui commencent par 'v' (ex : v1.0.0)
-
+  workflow_dispatch:
 jobs:
   build:
     name: Build APK and Deploy to Firebase
