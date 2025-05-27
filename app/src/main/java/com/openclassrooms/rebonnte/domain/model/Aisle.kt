@@ -5,4 +5,4 @@ package com.openclassrooms.rebonnte.domain.model
  *
  * @property name The name of the aisle.
  */
-class Aisle(var name: String)
+data class Aisle(var name: String)

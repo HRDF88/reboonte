@@ -32,6 +32,7 @@ import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.domain.model.Aisle
 import com.openclassrooms.rebonnte.ui.component.AddAisleForm
 import com.openclassrooms.rebonnte.ui.component.LoadingComponent
+import com.openclassrooms.rebonnte.ui.theme.RebonnteTheme
 import com.openclassrooms.rebonnte.ui.theme.vertRebonnte
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,44 +74,50 @@ fun AddAisleScreen(
             viewModel.resetMessage()
         }
     }
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = backButton,
-                            tint = Color.White,
+
+    RebonnteTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = backButton,
+                                tint = Color.White,
+                            )
+                        }
+                    },
+                    title = {
+                        Text(
+                            text = stringResource(R.string.add_tittle),
+                            color = Color.White
                         )
-                    }
-                },
-                title = {
-                    Text(
-                        text = stringResource(R.string.add_tittle),
-                        color = Color.White
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = vertRebonnte
+                    ),
+
                     )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = vertRebonnte
-                ),
+            }
+        ) { innerPadding ->
+            if (aisleState.isLoading) {
 
-                )
-        }
-    ) { innerPadding ->
-        if (aisleState.isLoading) {
-
-            LoadingComponent()
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ) {
-            AddAisleForm(name = name, onNameChange = {name = it}, onClick = {addTrigger = true})
+                LoadingComponent()
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                AddAisleForm(
+                    name = name,
+                    onNameChange = { name = it },
+                    onClick = { addTrigger = true })
+            }
         }
     }
 }

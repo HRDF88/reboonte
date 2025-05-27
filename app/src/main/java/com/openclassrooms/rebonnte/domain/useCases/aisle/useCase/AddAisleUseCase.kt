@@ -9,7 +9,7 @@ import javax.inject.Inject
  *
  * @property repository The [AisleRepositoryInterface] used to perform data operations.
  */
-class AddAisleUseCase @Inject constructor(
+open class AddAisleUseCase @Inject constructor(
     private val repository: AisleRepositoryInterface
 ) {
 

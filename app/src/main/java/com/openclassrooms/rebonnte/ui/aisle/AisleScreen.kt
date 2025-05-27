@@ -31,6 +31,7 @@ import com.openclassrooms.rebonnte.R
 import com.openclassrooms.rebonnte.domain.model.Aisle
 import com.openclassrooms.rebonnte.ui.component.ErrorComposable
 import com.openclassrooms.rebonnte.ui.component.LoadingComponent
+import com.openclassrooms.rebonnte.ui.theme.RebonnteTheme
 
 @Composable
 fun AisleScreen(viewModel: AisleViewModel) {
@@ -53,25 +54,29 @@ fun AisleScreen(viewModel: AisleViewModel) {
     }
 
     if (state.aisle != null) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
+        RebonnteTheme {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
 
-            items(state.aisle) { aisle ->
-                AisleItem(aisle = aisle, onClick = {
-                    startDetailActivity(context, aisle.name)
-                })
+                items(state.aisle) { aisle ->
+                    AisleItem(aisle = aisle, onClick = {
+                        startDetailActivity(context, aisle.name)
+                    })
+                }
             }
         }
     } else {
-        ErrorComposable { viewModel.loadAllAisle() }
+        RebonnteTheme {
+            ErrorComposable { viewModel.loadAllAisle() }
+        }
     }
 }
 
 
 @Composable
 fun AisleItem(aisle: Aisle, onClick: () -> Unit) {
-    val nameContentDescription = stringResource(R.string.name_of_aisle,aisle.name)
+    val nameContentDescription = stringResource(R.string.name_of_aisle, aisle.name)
     Row(
         modifier = Modifier
             .fillMaxWidth()

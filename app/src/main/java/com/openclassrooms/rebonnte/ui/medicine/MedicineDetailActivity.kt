@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.openclassrooms.rebonnte.ui.component.MedicineDetailScreen
+import com.openclassrooms.rebonnte.ui.medecineDetail.MedicineDetailScreen
 import com.openclassrooms.rebonnte.ui.theme.RebonnteTheme
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -1,13 +1,7 @@
 package com.openclassrooms.rebonnte
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -31,11 +25,11 @@ import com.openclassrooms.rebonnte.ui.addAisle.AddAisleScreen
 import com.openclassrooms.rebonnte.ui.addMedicine.AddMedicineScreen
 import com.openclassrooms.rebonnte.ui.aisle.AisleScreen
 import com.openclassrooms.rebonnte.ui.aisle.AisleViewModel
+import com.openclassrooms.rebonnte.ui.aisleDetail.AisleDetailScreen
 import com.openclassrooms.rebonnte.ui.auth.AuthViewModel
-import com.openclassrooms.rebonnte.ui.component.AisleDetailScreen
 import com.openclassrooms.rebonnte.ui.component.LoadingComponent
-import com.openclassrooms.rebonnte.ui.component.MedicineDetailScreen
 import com.openclassrooms.rebonnte.ui.component.MyApp
+import com.openclassrooms.rebonnte.ui.medecineDetail.MedicineDetailScreen
 import com.openclassrooms.rebonnte.ui.medicine.MedicineScreen
 import com.openclassrooms.rebonnte.ui.medicine.MedicineViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private lateinit var myBroadcastReceiver: MyBroadcastReceiver
+
     private val authViewModel: AuthViewModel by viewModels()
     private lateinit var signInLauncher:
             ActivityResultLauncher<Intent>
@@ -71,52 +65,15 @@ class MainActivity : ComponentActivity() {
                 MyApp(
                     navController = navController,
                     medicineViewModel = medicineViewModel,
-                    aisleViewModel = aisleViewModel)
+                    aisleViewModel = aisleViewModel
+                )
             } else {
 
                 LoadingComponent()
             }
         }
-
-        startBroadcastReceiver()
-    }
-
-
-    private fun startMyBroadcast() {
-        val intent = Intent("com.rebonnte.ACTION_UPDATE")
-        sendBroadcast(intent)
-        //startBroadcastReceiver() infinite loop
-    }
-
-    private fun startBroadcastReceiver() {
-        myBroadcastReceiver = MyBroadcastReceiver()
-        val filter = IntentFilter().apply {
-            addAction("com.rebonnte.ACTION_UPDATE")
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(myBroadcastReceiver, filter, RECEIVER_NOT_EXPORTED)
-        } else {
-            registerReceiver(myBroadcastReceiver, filter)
-        }
-
-        Handler().postDelayed({
-            startMyBroadcast()
-        }, 2000)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(myBroadcastReceiver)
-    }
-
-
-    class MyBroadcastReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            Toast.makeText(context, "Update reçu", Toast.LENGTH_SHORT).show()
-        }
     }
 }
-
 
 
 @Composable
@@ -124,6 +81,7 @@ fun currentRoute(navController: NavController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     return navBackStackEntry?.destination?.route
 }
+
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,

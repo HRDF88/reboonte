@@ -34,6 +34,7 @@ import com.openclassrooms.rebonnte.domain.model.History
 import com.openclassrooms.rebonnte.domain.model.Medicine
 import com.openclassrooms.rebonnte.ui.component.AddMedicineForm
 import com.openclassrooms.rebonnte.ui.component.LoadingComponent
+import com.openclassrooms.rebonnte.ui.theme.RebonnteTheme
 import com.openclassrooms.rebonnte.ui.theme.vertRebonnte
 import java.util.Date
 
@@ -92,53 +93,54 @@ fun AddMedicineScreen(
             viewModel.resetMessage()
         }
     }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = backButton,
-                            tint = Color.White,
+    RebonnteTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = backButton,
+                                tint = Color.White,
+                            )
+                        }
+                    },
+                    title = {
+                        Text(
+                            text = stringResource(R.string.add_tittle_medicine),
+                            color = Color.White
                         )
-                    }
-                },
-                title = {
-                    Text(
-                        text = stringResource(R.string.add_tittle_medicine),
-                        color = Color.White
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = vertRebonnte
+                    ),
+
                     )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = vertRebonnte
-                ),
+            }
+        ) { innerPadding ->
+            if (medicineState.isLoading) {
 
+                LoadingComponent()
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                AddMedicineForm(
+                    name = name,
+                    onNameChange = { name = it },
+                    onClick = { addTrigger = true },
+                    aisleList = listAisle,
+                    selectedAisles = listOfNotNull(selectedAisle),
+                    onAisleSelected = { selectedAisle = it },
+                    onAisleUnselected = { selectedAisle = null }
                 )
-        }
-    ) { innerPadding ->
-        if (medicineState.isLoading) {
-
-            LoadingComponent()
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ) {
-            AddMedicineForm(
-                name = name,
-                onNameChange = { name = it },
-                onClick = { addTrigger = true },
-                aisleList = listAisle,
-                selectedAisles = listOfNotNull(selectedAisle),
-                onAisleSelected = { selectedAisle = it },
-                onAisleUnselected = { selectedAisle = null }
-            )
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.openclassrooms.rebonnte.ui.component
+package com.openclassrooms.rebonnte.ui.aisleDetail
 
 import android.app.Activity
 import android.content.Intent
@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.openclassrooms.rebonnte.R
+import com.openclassrooms.rebonnte.ui.component.MedicineItem
 import com.openclassrooms.rebonnte.ui.medicine.MedicineDetailActivity
 import com.openclassrooms.rebonnte.ui.medicine.MedicineViewModel
 

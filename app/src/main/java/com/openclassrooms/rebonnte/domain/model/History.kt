@@ -8,7 +8,7 @@ package com.openclassrooms.rebonnte.domain.model
  * @property date The date the action was performed or the event occurred, typically stored as a String
  * @property details Additional details about the action or event.
  */
-class History(
+data class History(
     var medicineName: String,
     var userId: String,
     var date: String,

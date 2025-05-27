@@ -3,6 +3,7 @@
     <string name="app_name">rebonnte</string>
     <string name="stock">Stock</string>
     <string name="history">Historique :</string>
+    <string name="name">Nom</string>
 
     //MyApp
     <string name="logout_title">Déconnexion</string>
